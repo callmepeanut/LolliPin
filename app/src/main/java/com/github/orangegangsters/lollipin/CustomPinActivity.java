@@ -18,6 +18,11 @@ import uk.me.lewisdeane.ldialogs.CustomDialog;
 public class CustomPinActivity extends AppLockActivity {
 
     @Override
+    public int getContentView() {
+        return R.layout.custom_layout;
+    }
+
+    @Override
     public void showForgotDialog() {
         Resources res = getResources();
         // Create the builder with required paramaters - Context, Title, Positive Text
@@ -65,16 +70,13 @@ public class CustomPinActivity extends AppLockActivity {
 
     @Override
     public void onPinFailure(int attempts) {
+        Toast.makeText(this, "onPinFailure", Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     public void onPinSuccess(int attempts) {
-
+        Toast.makeText(this, "onPinSuccess", Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public int getPinLength() {
-        return super.getPinLength();//you can override this method to change the pin length from the default 4
-    }
 }

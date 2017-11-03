@@ -13,7 +13,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.omadahealth.typefaceview.TypefaceTextView;
 import com.github.orangegangsters.lollipin.lib.PinActivity;
 import com.github.orangegangsters.lollipin.lib.R;
 import com.github.orangegangsters.lollipin.lib.enums.KeyboardButtonEnum;
@@ -50,6 +49,7 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
     protected FingerprintUiHelper mFingerprintUiHelper;
 
     protected int mType = AppLock.UNLOCK_PIN;
+    protected int mFinger = AppLock.ENABLE_FINGER_PRINT;
     protected int mAttempts = 1;
     protected String mPinCode;
 
@@ -103,6 +103,7 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
         Bundle extras = intent.getExtras();
         if (extras != null) {
             mType = extras.getInt(AppLock.EXTRA_TYPE, AppLock.UNLOCK_PIN);
+            mFinger = extras.getInt(AppLock.FINGER_STATE, AppLock.ENABLE_FINGER_PRINT);
         }
 
         mLockManager = LockManager.getInstance();
@@ -115,14 +116,14 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
         mStepTextView = (TextView) this.findViewById(R.id.pin_code_step_textview);
         mPinCodeRoundView = (PinCodeRoundView) this.findViewById(R.id.pin_code_round_view);
         mPinCodeRoundView.setPinLength(this.getPinLength());
-        mForgotTextView = (TypefaceTextView) this.findViewById(R.id.pin_code_forgot_textview);
+        mForgotTextView = (TextView) this.findViewById(R.id.pin_code_forgot_textview);
         mForgotTextView.setOnClickListener(this);
         mKeyboardView = (KeyboardView) this.findViewById(R.id.pin_code_keyboard_view);
         mKeyboardView.setKeyboardButtonClickedListener(this);
 
         int logoId = mLockManager.getAppLock().getLogoId();
         ImageView logoImage = ((ImageView) findViewById(R.id.pin_code_logo_imageview));
-        if (logoId != AppLock.LOGO_ID_NONE) {
+        if (logoImage != null && logoId != AppLock.LOGO_ID_NONE) {
             logoImage.setVisibility(View.VISIBLE);
             logoImage.setImageResource(logoId);
         }
@@ -143,22 +144,22 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
             mFingerprintManager = (FingerprintManager) getSystemService(Context.FINGERPRINT_SERVICE);
             mFingerprintUiHelper = new FingerprintUiHelper.FingerprintUiHelperBuilder(mFingerprintManager).build(mFingerprintImageView, mFingerprintTextView, this);
             try {
-                if (mFingerprintManager.isHardwareDetected()) {
-                    mFingerprintImageView.setVisibility(View.VISIBLE);
-                    mFingerprintTextView.setVisibility(View.VISIBLE);
+                if (mFingerprintManager.isHardwareDetected() && mFinger == AppLock.ENABLE_FINGER_PRINT) {
+                    setVisibilityState(mFingerprintImageView, View.VISIBLE);
+                    setVisibilityState(mFingerprintTextView, View.VISIBLE);
                     mFingerprintUiHelper.startListening();
                 } else {
-                    mFingerprintImageView.setVisibility(View.GONE);
-                    mFingerprintTextView.setVisibility(View.GONE);
+                    setVisibilityState(mFingerprintImageView, View.GONE);
+                    setVisibilityState(mFingerprintTextView, View.GONE);
                 }
             } catch (SecurityException e) {
                 Log.e(TAG, e.toString());
-                mFingerprintImageView.setVisibility(View.GONE);
-                mFingerprintTextView.setVisibility(View.GONE);
+                setVisibilityState(mFingerprintImageView, View.GONE);
+                setVisibilityState(mFingerprintTextView, View.GONE);
             }
         } else {
-            mFingerprintImageView.setVisibility(View.GONE);
-            mFingerprintTextView.setVisibility(View.GONE);
+            setVisibilityState(mFingerprintImageView, View.GONE);
+            setVisibilityState(mFingerprintTextView, View.GONE);
         }
     }
 
@@ -174,6 +175,12 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
             }
         } catch (Exception e) {
             Log.e(TAG, e.toString());
+        }
+    }
+
+    private void setVisibilityState(View view, int mode) {
+        if (view != null) {
+            view.setVisibility(mode);
         }
     }
 

@@ -2,7 +2,6 @@ package com.github.orangegangsters.lollipin;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.*;
 import android.view.View;
 import android.widget.Toast;
 
@@ -42,6 +41,8 @@ public class MainActivity extends PinActivity implements View.OnClickListener {
                 break;
             case R.id.button_unlock_pin:
                 intent.putExtra(AppLock.EXTRA_TYPE, AppLock.UNLOCK_PIN);
+                //Uncomment following line to test finger print disabled state.
+                //intent.putExtra(AppLock.FINGER_STATE, AppLock.DISABLE_FINGER_PRINT);
                 startActivity(intent);
                 break;
             case R.id.button_compat_locked:

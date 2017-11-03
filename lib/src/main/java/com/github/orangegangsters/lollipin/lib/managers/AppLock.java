@@ -14,6 +14,14 @@ public abstract class AppLock {
      */
     public static final int DISABLE_PINLOCK = 1;
     /**
+     * ENABLE_FINGER_PRINT type, is used to enable finger print scanning
+     */
+    public static final int ENABLE_FINGER_PRINT = 0;
+    /**
+     * DISABLE_FINGER_PRINT type, is used to enable finger print scanning
+     */
+    public static final int DISABLE_FINGER_PRINT = 1;
+    /**
      * CHANGE_PIN type, uses to change the current password
      */
     public static final int CHANGE_PIN = 2;
@@ -36,6 +44,11 @@ public abstract class AppLock {
      * to determine in which type it musts be started.
      */
     public static final String EXTRA_TYPE = "type";
+    /**
+     * EXTRA_TYPE, uses to pass to the {@link com.github.orangegangsters.lollipin.lib.managers.AppLockActivity}
+     * to determine in which type it musts be started.
+     */
+    public static final String FINGER_STATE = "finger";
 
     /**
      * DEFAULT_TIMEOUT, define the default timeout returned by {@link #getTimeout()}.
