@@ -166,8 +166,10 @@ By providing a custom layout to getContentView() you can alter how your AppLockA
 However, you must include 4 required elements:
 - TextView with an id of pin_code_step_textview
 - TextView with an id of pin_code_forgot_textview
+- TextView with an id of pin_code_fingerprint_textview
 - PinCodeRoundView with an id of pin_code_round_view
 - KeyboardView with an id of pin_code_keyboard_view
+- ImageView with an id of pin_code_fingerprint_imageview
 
 ```
 @Override
